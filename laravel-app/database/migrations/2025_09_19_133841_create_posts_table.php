@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('description');
             $table->text('content');
             $table->string('thumbnail');
-            $table->foreignIdFor(Category::class);
+            $table->foreignId('category_id')->constrained('categories');
             $table->timestamps();
         });
     }

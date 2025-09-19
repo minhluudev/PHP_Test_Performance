@@ -21,12 +21,14 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+        for ($i = 1; $i <= 10; $i++) {
+            $category = Category::factory()->create();
 
-        $category = Post::factory()->create();
+            Post::factory()->count(20000)->create([
+                'category_id' => $category->id
+            ]);
 
-        Post::factory()->count(100000)->create([
-            'category_id' => $category->id
-        ]);
-
+            echo 'Done: ' . $i . PHP_EOL ;
+        }
     }
 }

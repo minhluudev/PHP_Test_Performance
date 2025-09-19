@@ -21,7 +21,7 @@ class CategoryController extends Controller
                         ->orderBy('title', 'asc')
                         ->orderBy('description', 'asc')
                         ->orderBy('content', 'desc')
-                        ->paginate(200);
+                        ->paginate(500);
         sleep(3);
         return response()->json($products);
     }
