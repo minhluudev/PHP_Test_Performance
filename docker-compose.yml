@@ -8,6 +8,8 @@ services:
       - ./laravel-app:/var/www
     networks:
       - laravel
+    cpus: 1
+    mem_limit: '1g'
 
   nginx:
     image: nginx:1.25-alpine
@@ -21,6 +23,8 @@ services:
       - app
     networks:
       - laravel
+    cpus: 1
+    mem_limit: '1g'
 
   db:
     image: mysql:8.0
@@ -36,6 +40,8 @@ services:
       - ./docker/db_data:/var/lib/mysql
     networks:
       - laravel
+    cpus: 1
+    mem_limit: '1g'
 
 networks:
   laravel:
