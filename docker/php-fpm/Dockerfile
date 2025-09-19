@@ -1,5 +1,7 @@
 FROM php:8.2-fpm
 
+# Copy file cấu hình PHP-FPM custom
+COPY ./docker/php-fpm/php-fpm.conf /usr/local/etc/php-fpm.d/www.conf
 # Cài extension cần thiết cho Laravel
 RUN apt-get update && apt-get install -y \
     libpng-dev libonig-dev libxml2-dev zip unzip git curl \
