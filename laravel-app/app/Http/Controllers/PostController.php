@@ -5,17 +5,25 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
+use App\Models\Post;
 
-class CategoryController extends Controller
+class PostController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $categories = Category::all();
-        sleep(3);
-        return response()->json($categories);
+        $products = Post::with('category')
+            ->where('title', 'like', '% %')
+            ->where('description', 'like', '% %')
+            ->where('content', 'like', '% %')
+            ->orderBy('title', 'asc')
+            ->orderBy('description', 'asc')
+            ->orderBy('content', 'desc')
+            ->paginate(100);
+        // sleep(3);
+        return response()->json($products);
     }
 
     /**
