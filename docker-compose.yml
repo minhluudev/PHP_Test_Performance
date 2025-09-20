@@ -7,7 +7,7 @@ services:
     volumes:
       - ./logs/php-fpm:/var/www/storage/logs
       - ./docker/php-fpm/php-fpm.conf:/usr/local/etc/php-fpm.d/www.conf
-      # - ./laravel-app:/var/www
+      - ./laravel-app/app:/var/www/app
     networks:
       - laravel
     cpus: 2
@@ -24,7 +24,7 @@ services:
     volumes:
       - ./logs/franken-php:/app/storage/logs
       - ./docker/franken-php/Caddyfile:/etc/caddy/Caddyfile
-      # - ./laravel-app:/app
+      - ./laravel-app/app:/app/app
       # - ./docker/franken-php/Caddyfile:/app/Caddyfile
     networks:
       - laravel
