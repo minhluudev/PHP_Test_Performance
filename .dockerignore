@@ -1,0 +1,3 @@
+laravel-app/vendor
+laravel-app/storage/logs
+laravel-app/.env

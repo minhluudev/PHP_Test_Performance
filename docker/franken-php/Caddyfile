@@ -1,0 +1,11 @@
+:80 {
+    root * /app/public
+    encode zstd gzip
+    try_files {path} /index.php
+
+    php_server {
+        root /app/public
+    }
+
+    file_server
+}

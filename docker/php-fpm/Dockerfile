@@ -15,7 +15,15 @@ WORKDIR /var/www
 # Copy code (chỉ khi build, dev thì mount volume)
 COPY ./laravel-app .
 
-RUN composer install
+RUN cp .env.example .env
+RUN composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
+
+# Clear cache Laravel
+RUN php artisan key:generate \
+ && php artisan config:clear || true \
+ && php artisan route:clear || true \
+ && php artisan cache:clear || true \
+ && php artisan view:clear || true
 
 # Quyền cho storage & bootstrap/cache
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache

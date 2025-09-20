@@ -3,13 +3,33 @@ services:
     build:
       context: .
       dockerfile: docker/php-fpm/Dockerfile
-    container_name: laravel-app
+    container_name: laravel-php-fpm-app
     volumes:
-      - ./laravel-app:/var/www
+      - ./logs/php-fpm:/var/www/storage/logs
+      # - ./laravel-app:/var/www
     networks:
       - laravel
-    cpus: 1
-    mem_limit: '1g'
+    cpus: 2
+    mem_limit: '2g'
+    depends_on:
+      - db
+  franken-php-app:
+    build:
+      context: .
+      dockerfile: docker/franken-php/Dockerfile
+    container_name: laravel-franken-php-app
+    ports:
+      - "8001:80"
+    volumes:
+      - ./logs/franken-php:/app/storage/logs
+      # - ./laravel-app:/app
+      # - ./docker/franken-php/Caddyfile:/app/Caddyfile
+    networks:
+      - laravel
+    cpus: 2
+    mem_limit: '2g'
+    depends_on:
+      - db
 
   nginx:
     image: nginx:1.25-alpine
@@ -23,8 +43,8 @@ services:
       - php-fpm-app
     networks:
       - laravel
-    cpus: 1
-    mem_limit: '1g'
+    cpus: 2
+    mem_limit: '2g'
 
   db:
     image: mysql:8.0
@@ -40,8 +60,8 @@ services:
       - ./docker/db_data:/var/lib/mysql
     networks:
       - laravel
-    cpus: 1
-    mem_limit: '1g'
+    cpus: 2
+    mem_limit: '2g'
 
 networks:
   laravel:
