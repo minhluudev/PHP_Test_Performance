@@ -8,23 +8,44 @@ services:
       - ./logs/php-fpm:/var/www/storage/logs
       - ./docker/php-fpm/php-fpm.conf:/usr/local/etc/php-fpm.d/www.conf
       - ./laravel-app/app:/var/www/app
+      - ./laravel-app/routes:/var/www/routes
     networks:
       - laravel
     cpus: 2
     mem_limit: '2g'
     depends_on:
       - db
-  franken-php-app:
+  franken-php-classic-app:
     build:
       context: .
-      dockerfile: docker/franken-php/Dockerfile
-    container_name: laravel-franken-php-app
+      dockerfile: docker/franken-php-classic/Dockerfile
+    container_name: laravel-franken-php-classic-app
     ports:
       - "8001:80"
     volumes:
-      - ./logs/franken-php:/app/storage/logs
-      - ./docker/franken-php/Caddyfile:/etc/caddy/Caddyfile
+      - ./logs/franken-php-classic:/app/storage/logs
+      - ./docker/franken-php-classic/Caddyfile:/etc/caddy/Caddyfile
       - ./laravel-app/app:/app/app
+      - ./laravel-app/routes:/app/routes
+      # - ./docker/franken-php/Caddyfile:/app/Caddyfile
+    networks:
+      - laravel
+    cpus: 2
+    mem_limit: '2g'
+    depends_on:
+      - db
+  franken-php-worker-app:
+    build:
+      context: .
+      dockerfile: docker/franken-php-worker/Dockerfile
+    container_name: laravel-franken-php-worker-app
+    ports:
+      - "8002:8000"
+    volumes:
+      - ./logs/franken-php-worker:/app/storage/logs
+      - ./docker/franken-php-worker/Caddyfile:/etc/caddy/Caddyfile
+      - ./laravel-app/app:/app/app
+      - ./laravel-app/routes:/app/routes
       # - ./docker/franken-php/Caddyfile:/app/Caddyfile
     networks:
       - laravel

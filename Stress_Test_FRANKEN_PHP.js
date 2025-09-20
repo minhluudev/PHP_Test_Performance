@@ -7,7 +7,7 @@ export let options = {
 };
 
 export default function () {
-  http.get('http://localhost:8001/categories');
+  http.get('http://localhost:8001/db-benchmark');
   sleep(1);
 }
 // k6 run Stress_Test_FRANKEN_PHP.js

@@ -1,0 +1,20 @@
+{
+  frankenphp {
+    num_threads 2
+    max_threads auto
+    max_wait_time 30s
+  }
+}
+
+:80 {
+    root * /app/public
+    encode zstd gzip
+    try_files {path} /index.php
+
+    php_server {
+        root /app/public
+				worker 2
+    }
+
+    file_server
+}
