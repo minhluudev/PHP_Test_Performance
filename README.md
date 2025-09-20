@@ -24,3 +24,17 @@ Context switch nhiều → hiệu năng giảm.
 
 top -p $(pgrep -d',' php-fpm)
 top -p $(pgrep -d',' frankenphp)
+
+```
+# Default
+pm = dynamic
+pm.max_children = 5
+pm.start_servers = 2
+pm.min_spare_servers = 1
+pm.max_spare_servers = 3
+```
+NOTE
+- Master process: 1 process
+- Worker process: khởi tạo 2 process (start_servers)
+- Khi load tăng: tối đa 5 worker (max_children)
+- Khi load giảm: giữ tối thiểu 1 worker nhàn rỗi (min_spare_servers)
