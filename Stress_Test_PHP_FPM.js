@@ -3,7 +3,7 @@ import http from 'k6/http';
 
 export let options = {
   vus: 100,        // số lượng người dùng ảo đồng thời
-  duration: '3s' // thời gian test
+  duration: '1s' // thời gian test
 };
 
 export default function () {
