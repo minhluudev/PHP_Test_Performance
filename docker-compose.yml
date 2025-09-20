@@ -6,6 +6,7 @@ services:
     container_name: laravel-php-fpm-app
     volumes:
       - ./logs/php-fpm:/var/www/storage/logs
+      - ./docker/php-fpm/php-fpm.conf:/usr/local/etc/php-fpm.d/www.conf
       # - ./laravel-app:/var/www
     networks:
       - laravel
@@ -22,6 +23,7 @@ services:
       - "8001:80"
     volumes:
       - ./logs/franken-php:/app/storage/logs
+      - ./docker/franken-php/Caddyfile:/etc/caddy/Caddyfile
       # - ./laravel-app:/app
       # - ./docker/franken-php/Caddyfile:/app/Caddyfile
     networks:

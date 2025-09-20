@@ -11,6 +11,8 @@ RUN install-php-extensions \
 		zip \
 		opcache
 
+RUN apt-get update && apt-get install -y \
+    libpng-dev libonig-dev libxml2-dev zip unzip git curl procps
 # Copy source Laravel
 WORKDIR /app
 COPY ./laravel-app .

@@ -4,7 +4,7 @@ FROM php:8.2-fpm
 COPY ./docker/php-fpm/php-fpm.conf /usr/local/etc/php-fpm.d/www.conf
 # Cài extension cần thiết cho Laravel
 RUN apt-get update && apt-get install -y \
-    libpng-dev libonig-dev libxml2-dev zip unzip git curl \
+    libpng-dev libonig-dev libxml2-dev zip unzip git curl procps \
     && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
 # Cài Composer

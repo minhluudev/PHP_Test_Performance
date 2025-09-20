@@ -21,3 +21,6 @@ Nhưng vì bạn chỉ có 1 CPU core, nếu bạn set nhiều quá (ví dụ 50
 CPU không xử lý kịp → request xếp hàng, latency cao.
 
 Context switch nhiều → hiệu năng giảm.
+
+top -p $(pgrep -d',' php-fpm)
+top -p $(pgrep -d',' frankenphp)
