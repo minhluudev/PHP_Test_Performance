@@ -1,0 +1,72 @@
+services:
+  php-fpm-app:
+    build:
+      context: .
+      dockerfile: docker/php-fpm/Dockerfile
+    container_name: laravel-php-fpm-app
+    volumes:
+      - ./docker/php-fpm/php-fpm.conf:/usr/local/etc/php-fpm.d/www.conf
+      - ./laravel-app:/var/www
+    networks:
+      - laravel
+    depends_on:
+      - db
+  franken-php-classic-app:
+    build:
+      context: .
+      dockerfile: docker/franken-php-classic/Dockerfile
+    container_name: laravel-franken-php-classic-app
+    ports:
+      - "8001:80"
+    volumes:
+      - ./docker/franken-php-classic/Caddyfile:/etc/caddy/Caddyfile
+      - ./laravel-app:/app
+    networks:
+      - laravel
+    depends_on:
+      - db
+  franken-php-worker-app:
+    build:
+      context: .
+      dockerfile: docker/franken-php-worker/Dockerfile
+    container_name: laravel-franken-php-worker-app
+    ports:
+      - "8002:8000"
+    volumes:
+      - ./docker/franken-php-worker/Caddyfile:/etc/caddy/Caddyfile
+      - ./laravel-app:/app
+    networks:
+      - laravel
+    depends_on:
+      - db
+
+  nginx:
+    image: nginx:1.25-alpine
+    container_name: laravel-nginx
+    ports:
+      - "8000:80"
+    volumes:
+      - ./laravel-app:/var/www
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php-fpm-app
+    networks:
+      - laravel
+
+  db:
+    image: mysql:8.0
+    container_name: laravel-db
+    environment:
+      MYSQL_DATABASE: laravel
+      MYSQL_USER: laravel_user
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./docker/db_data:/var/lib/mysql
+    networks:
+      - laravel
+
+networks:
+  laravel:
