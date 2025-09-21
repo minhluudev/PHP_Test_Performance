@@ -4,10 +4,24 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PostController;
 use App\Models\Category;
 use App\Models\Post;
+use Illuminate\Support\Benchmark;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Log;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+
+Route::get('franken-test', function () {
+    static $counter = 0;
+    $counter++;
+
+    return response()->json([
+        'mode' => 'FrankenPHP test',
+        'counter' => $counter,
+        'time' => date('H:i:s'),
+    ]);
 });
 
 Route::get('benchmark', function () {
@@ -28,17 +42,19 @@ Route::get('benchmark', function () {
 });
 
 Route::get('/db-benchmark', function () {
-    $start = microtime(true);
-    $posts = Post::with('category')
-        ->where('title', 'like', '% %')
-        // ->orderBy('title', 'asc')
-        ->paginate(10);
-    $time = microtime(true) - $start;
+    $result = Benchmark::measure(
+        fn() => Post::with('category')
+            ->where('title', 'like', '% %')
+            // ->orderBy('title', 'asc')
+            ->paginate(10)
+    );
+
+    $result = round($result / 1000, 2); // convert ms to s
+
+    Log::info('[db-benchmark] Time: ' . $result . ' s');
 
     return response()->json([
-        'queries' => 100,
-        'time_seconds' => $time,
-        'data' => $posts
+        'result' => $result
     ]);
 });
 

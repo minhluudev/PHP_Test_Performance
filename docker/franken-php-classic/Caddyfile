@@ -1,6 +1,6 @@
 {
   frankenphp {
-    num_threads 2
+    num_threads 8
     max_threads auto
     max_wait_time 30s
   }
@@ -9,11 +9,10 @@
 :80 {
     root * /app/public
     encode zstd gzip
-    try_files {path} /index.php
+
+    file_server
 
     php_server {
         root /app/public
     }
-
-    file_server
 }

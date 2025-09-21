@@ -31,6 +31,8 @@ RUN cp .env.example .env \
  && php artisan cache:clear || true \
  && php artisan view:clear || true
 
+RUN sed -i'' -e 's/^APP_ENV=.*/APP_ENV=production/' -e 's/^APP_DEBUG=.*/APP_DEBUG=false/' .env
+
 # Set quyền storage & bootstrap
 RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache \
  && chmod -R 777 /app/storage /app/bootstrap/cache
