@@ -93,9 +93,38 @@ b. Laravel Octane
 	- Octane chạy Laravel trong Worker Mode:
 	- Giữ ứng dụng Laravel luôn sống trong bộ nhớ (container, configs, routes…).
 	- Khi có request mới → chỉ tái sử dụng app đã load sẵn → xử lý nhanh hơn nhiều lần.
-
+- Octane là layer bổ sung của Laravel để chạy trên các server hỗ trợ worker mode (Swoole, RoadRunner, FrankenPHP).
+- Khi chạy `php artisan octane:frankenphp`, Octane sẽ:
+	- Dùng frankenphp_handle_request ở bên dưới
+	- Thêm cơ chế reset app giữa các request:
+		- Clear middleware state
+		- Reset singleton trong service container
+		- Reset request/response lifecycle
+		- Giữ các phần “an toàn” như DB connection, cache pool…
+	- Quản lý worker pool, số lượng worker, max requests…
+	- Nói cách khác
+		- FrankenPHP chỉ cung cấp vòng lặp worker (frankenphp_handle_request).
+		- Octane biết Laravel cần reset cái gì giữa requests → đảm bảo không bị leak state, memory, hay dữ liệu “dính” từ request trước.
+	- Ưu điểm: chạy Laravel an toàn hơn, tự động reset.
+  - Nhược điểm: thêm lớp phức tạp (Octane codebase, Artisan command).
 
 ![Architecture](./docs/franken-php-laravel.png "Kiến trúc")
+c. frankenphp_handle_request (native FrankenPHP)
+- Đây là API gốc của FrankenPHP (một web server tích hợp PHP runtime).
+- Mỗi request đến, nó gọi callback bạn truyền vào.
+- Worker process không bị kill sau mỗi request, nghĩa là code/app có thể giữ nguyên state (class đã load, kết nối DB, cache…).
+- Ưu điểm: native, không cần package phụ trợ.
+- Nhược điểm: Laravel chưa “out-of-the-box” tận dụng hết (ví dụ reset container, flush middleware state…), bạn phải tự xử lý nếu không có Octane.
+
+```
+out-of-the-box: Một phần mềm/hệ thống có thể chạy hoặc sử dụng ngay lập tức mà không cần cấu hình hay chỉnh sửa gì thêm.
+```
+d. Vấn đề nếu không reset
+- Giữa 2 request liên tiếp, nếu không reset state, có thể xảy ra:
+	- Biến global/static giữ lại giá trị từ request trước → gây lỗi logic.
+		- Ví dụ: $user của request 1 vẫn còn trong container, request 2 lại thấy user sai.
+	- Singleton service (cache, config, auth, session, DB connection pool…) bị dùng lại không đúng cách.
+	- Memory leak: dữ liệu tích tụ sau nhiều request, RAM bị phình to.
 
 ## III. Demo
 - Stress test: K6
@@ -105,7 +134,7 @@ b. Laravel Octane
 	- Database: 2 - cpus, 4gb - memory limit
 
 ### 1. PHP-FPM
-<video src="https://github.com/minhluudev/PHP_Test_Performance/blob/main/docs/Test-PHP-FPM.mp4"></video>
+<video src="./docs/Test-PHP-FPM.gif"></video>
 
 ```bash
 k6 run Stress_Test_PHP_FPM.js
