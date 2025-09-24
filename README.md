@@ -134,7 +134,7 @@ d. Vấn đề nếu không reset
 	- Database: 2 - cpus, 4gb - memory limit
 
 ### 1. PHP-FPM
-<video src="./docs/Test-PHP-FPM.gif"></video>
+![video](./docs/Test-PHP-FPM.gif)
 
 ```bash
 k6 run Stress_Test_PHP_FPM.js
@@ -285,7 +285,7 @@ default ✓ [======================================] 100 VUs  1s
 ```
 
 ### 2. FrankenPHP – Classic mode
-<video src="https://github.com/minhluudev/PHP_Test_Performance/blob/main/docs/Test-FrankenPHP-Classic.mp4"></video>
+![video](./docs/Test-FrankenPHP-Classic.gif)
 
 ```bash
 k6 run Stress_Test_FRANKEN_PHP.js
@@ -436,7 +436,7 @@ default ✓ [======================================] 100 VUs  1s
 ```
 
 ### 3. FrankenPHP – Worker
-<video src="https://github.com/minhluudev/PHP_Test_Performance/blob/main/docs/Test-FrankenPHP-WorkerMode.mp4"></video>
+![video](./docs/Test-FrankenPHP-WorkerMode.gif)
 
 ```bash
 k6 run Stress_Test_FRANKEN_PHP_WORKER.js 
