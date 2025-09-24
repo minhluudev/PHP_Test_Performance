@@ -8,6 +8,6 @@ export let options = {
 
 export default function () {
   http.get('http://localhost:8000/db-benchmark');
-  sleep(1);
+  // sleep(1);
 }
 // k6 run Stress_Test_PHP_FPM.js
