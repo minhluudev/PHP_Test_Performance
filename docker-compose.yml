@@ -40,10 +40,29 @@ services:
       dockerfile: docker/franken-php-worker/Dockerfile
     container_name: laravel-franken-php-worker-app
     ports:
-      - "8002:8000"
+      - "8002:80"
     volumes:
       - ./logs/franken-php-worker:/app/storage/logs
       - ./docker/franken-php-worker/Caddyfile:/etc/caddy/Caddyfile
+      - ./laravel-app/app:/app/app
+      - ./laravel-app/routes:/app/routes
+      # - ./docker/franken-php/Caddyfile:/app/Caddyfile
+    networks:
+      - laravel
+    cpus: 2
+    mem_limit: '2g'
+    depends_on:
+      - db
+  franken-php-octane-app:
+    build:
+      context: .
+      dockerfile: docker/franken-php-octane/Dockerfile
+    container_name: laravel-franken-php-octane-app
+    ports:
+      - "8003:8000"
+    volumes:
+      - ./logs/franken-php-octane:/app/storage/logs
+      - ./docker/franken-php-octane/Caddyfile:/etc/caddy/Caddyfile
       - ./laravel-app/app:/app/app
       - ./laravel-app/routes:/app/routes
       # - ./docker/franken-php/Caddyfile:/app/Caddyfile

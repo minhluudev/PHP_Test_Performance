@@ -1,0 +1,10 @@
+services:
+  frankenphp:
+    build:
+      context: .
+      dockerfile: ./docker/franken-php/worker/Dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      - ./simple-app:/app
+      - ./docker/franken-php/worker/Caddyfile:/etc/caddy/Caddyfile

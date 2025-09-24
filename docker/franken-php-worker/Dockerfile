@@ -41,4 +41,4 @@ RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache \
 EXPOSE 80
 
 # Chạy FrankenPHP (Laravel worker mode)
-CMD ["php", "artisan", "octane:frankenphp", "--workers=4", "--max-requests=500"]
+CMD ["frankenphp", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
