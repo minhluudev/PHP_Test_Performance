@@ -105,7 +105,7 @@ b. Laravel Octane
 	- Database: 2 - cpus, 4gb - memory limit
 
 ### 1. PHP-FPM
-<video src="./docs/Test-PHP-FPM.mp4"></video>
+<video src="https://github.com/minhluudev/PHP_Test_Performance/blob/main/docs/Test-PHP-FPM.mp4"></video>
 
 ```bash
 k6 run Stress_Test_PHP_FPM.js
@@ -256,7 +256,7 @@ default ✓ [======================================] 100 VUs  1s
 ```
 
 ### 2. FrankenPHP – Classic mode
-<video src="./docs/Test-FrankenPHP-Classic.mp4"></video>
+<video src="https://github.com/minhluudev/PHP_Test_Performance/blob/main/docs/Test-FrankenPHP-Classic.mp4"></video>
 
 ```bash
 k6 run Stress_Test_FRANKEN_PHP.js
@@ -407,7 +407,7 @@ default ✓ [======================================] 100 VUs  1s
 ```
 
 ### 3. FrankenPHP – Worker
-<video src="./docs/Test-FrankenPHP-WorkerMode.mp4"></video>
+<video src="https://github.com/minhluudev/PHP_Test_Performance/blob/main/docs/Test-FrankenPHP-WorkerMode.mp4"></video>
 
 ```bash
 k6 run Stress_Test_FRANKEN_PHP_WORKER.js 
